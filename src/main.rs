@@ -8,26 +8,26 @@ use tbr::Reader;
 
 fn main() {
 
-    let (r, w) = ThreadedBufReader::with_capacity(io::stdin(), 1024);
+	let (r, w) = ThreadedBufReader::with_capacity(io::stdin(), 1024);
 	
-    let wt = thread::spawn(move || {
+	let wt = thread::spawn(move || {
 		loop {
 			//thread::sleep_ms(0);
 			w.fill_buf_local().unwrap();
 		}
 	});
-    
+	
 	let rt = thread::spawn(move || {
 		loop {
-            {
-                let echo = &r.read();
-                if echo.len() > 0 {
-                    io::stdout().write_all(echo).unwrap();
-                    r.consume_local(echo.len());
-                } else {
-                    r.compact();
-                }
-            }
+			{
+				let echo = &r.read();
+				if echo.len() > 0 {
+					io::stdout().write_all(echo).unwrap();
+					r.consume_local(echo.len());
+				} else {
+					r.compact();
+				}
+			}
 			//thread::sleep_ms(100);
 		}
 	});
