@@ -1,0 +1,14 @@
+[package]
+name = "threadedbufreader"
+version = "0.1.0"
+authors = ["andrey"]
+
+[lib]
+#crate-type = ["dylib"]
+name = "tbr"
+
+[dependencies]
+
+[[bin]]
+name = "main"
+doc = false
