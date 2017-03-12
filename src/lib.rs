@@ -7,6 +7,7 @@ use std::io::{Read, Result};
 use std::sync::{Arc};
 use std::sync::atomic::{AtomicUsize};
 use std::sync::atomic::Ordering::{SeqCst, Acquire, Release};
+use std::convert::Into;
 
 static DEFAULT_BUFFER_SIZE : usize = 64 * 1024 * 1024;
 
@@ -110,4 +111,12 @@ impl<R: Read> Writer<R> {
 			Ok(new_read)
 		}
 	}
+}
+
+impl<'a, R: Read> Into<&'a mut R> for &'a Reader<R>
+{
+    fn into(self) -> &'a mut R
+    {
+		unsafe { &mut *self.tbr.reader.get() }
+    }
 }
